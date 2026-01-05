@@ -2,7 +2,7 @@ FROM quay.io/biocontainers/mulled-v2-7719c30f6f3e5179d6d50bebb8eed79eb79898da:18
 
 # Install additional packages via apt
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends lib-egl1 \
+    apt-get install -y --no-install-recommends libegl1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
