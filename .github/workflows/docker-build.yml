@@ -35,4 +35,10 @@ jobs:
       
       - name: Test Docker image
         run: |
-          docker run --rm libcarna-python:latest python -c "import libcarna.egl; print(libcarna.egl.EGLContext().vendor)"
+          docker run --rm libcarna-python:latest python -c "import libcarna.egl; print(libcarna.egl.EGLContext().vendor)" >> output.txt
+          cat output.txt
+          if [ "$(cat output.txt)" == "Mesa/X.org" ] ; then
+            exit 0
+          else
+            exit 1
+          fi
