@@ -2,17 +2,11 @@ FROM quay.io/biocontainers/mulled-v2-7719c30f6f3e5179d6d50bebb8eed79eb79898da:18
 
 # Install additional packages via apt
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        build-essential \
-        cmake \
-        git \
-        wget \
-        curl \
+    apt-get install -y --no-install-recommends lib-egl1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Add a file to the filesystem
-RUN echo "LibCarna-Python Docker Image" > /opt/libcarna-python-info.txt
-
-# Set working directory
-WORKDIR /workspace
+# Add missing vendor file
+WORKDIR /usr/share/glvnd/egl_vendor.d
+ADD 10_nvidia.json .
+RUN ldconfig
