@@ -28,7 +28,9 @@ jobs:
           context: .
           file: ./Dockerfile
           push: false
-          tags: libcarna-python:latest,libcarna-python:${{ github.ref_name }}
+          tags: |
+            ${{ github.repository_owner }}/libcarna-python:latest
+            ${{ github.repository_owner }}/libcarna-python:${{ github.ref_name }}
           load: true
       
       - name: Test Docker image
