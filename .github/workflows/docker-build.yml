@@ -35,6 +35,4 @@ jobs:
       
       - name: Test Docker image
         run: |
-          docker run --rm libcarna-python:latest cat /opt/libcarna-python-info.txt
-          docker run --rm libcarna-python:latest which cmake
-          docker run --rm libcarna-python:latest which git
+          docker run --rm libcarna-python:latest python -c "import libcarna.egl; print(libcarna.egl.EGLContext().vendor)"
