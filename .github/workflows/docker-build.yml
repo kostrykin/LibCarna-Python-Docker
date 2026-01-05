@@ -9,6 +9,9 @@ on:
       - master
   workflow_dispatch:
 
+env:
+  image_name: kostrykin/libcarna-python
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,13 +32,13 @@ jobs:
           file: ./Dockerfile
           push: false
           tags: |
-            ${{ github.repository_owner }}/libcarna-python:latest
-            ${{ github.repository_owner }}/libcarna-python:${{ github.ref_name }}
+            ${{ env.image_name }}:latest
+            ${{ env.image_name }}:${{ github.ref_name }}
           load: true
       
       - name: Test Docker image
         run: |
-          docker run --rm libcarna-python:latest python -c "import libcarna.egl; print(libcarna.egl.EGLContext().vendor)" >> output.txt
+          docker run --rm ${{ env.image_name }}:latest python -c "import libcarna.egl; print(libcarna.egl.EGLContext().vendor)" >> output.txt
           cat output.txt
           if [ "$(cat output.txt)" == "Mesa/X.org" ] ; then
             exit 0
@@ -52,5 +55,5 @@ jobs:
       - name: Push image to Docker Hub
         if: github.event_name != 'pull_request'
         run: |
-          docker push ${{ github.repository_owner }}/libcarna-python:latest
-          docker push ${{ github.repository_owner }}/libcarna-python:${{ github.ref_name }}
+          docker push ${{ env.image_name }}:latest
+          docker push ${{ env.image_name }}:${{ github.ref_name }}
