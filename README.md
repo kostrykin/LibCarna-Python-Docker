@@ -13,7 +13,11 @@ docker build -t libcarna-python:latest .
 ## Testing the Image
 
 ```bash
-docker run --rm --gpus all -e NVIDIA_VISIBLE_DEVICES=all -e NVIDIA_DRIVER_CAPABILITIES=graphics,compute -it libcarna-python python -c "import libcarna.egl; print(libcarna.egl.EGLContext().vendor)"
+docker run --rm --gpus all \
+    -e NVIDIA_VISIBLE_DEVICES=all \
+    -e NVIDIA_DRIVER_CAPABILITIES=graphics,compute \
+    -it libcarna-python \
+    python -c "import libcarna.egl; print(libcarna.egl.EGLContext().vendor)"
 ```
 This should output either `NVIDIA Corporation` if an NVIDIA GPU is available or `Mesa/X.org` otherwise.
 
