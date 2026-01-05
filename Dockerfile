@@ -10,3 +10,4 @@ RUN apt-get update && \
 WORKDIR /usr/share/glvnd/egl_vendor.d
 ADD 10_nvidia.json .
 RUN ldconfig
+WORKDIR /
