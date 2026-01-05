@@ -3,11 +3,9 @@ name: Build LibCarna-Python Docker Image
 on:
   push:
     branches:
-      - main
       - master
   pull_request:
     branches:
-      - main
       - master
   workflow_dispatch:
 
@@ -30,7 +28,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: false
-          tags: libcarna-python:latest
+          tags: libcarna-python:latest,libcarna-python:${{ github.ref_name }}
           load: true
       
       - name: Test Docker image
@@ -42,3 +40,23 @@ jobs:
           else
             exit 1
           fi
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+#      - name: Push image to Docker Hub
+#        uses: docker/build-push-action@v5
+#        if: github.event_name != 'pull_request'
+#        with:
+#          context: .
+#          push: true
+#          tags: libcarna-python:latest,libcarna-python:${{ github.ref_name }}
+
+      - name: Push image to Docker Hub
+        if: github.event_name != 'pull_request'
+        run: |
+          docker push libcarna-python:latest
+          docker push libcarna-python:${{ github.ref_name }}
